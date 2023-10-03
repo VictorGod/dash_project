@@ -39,12 +39,7 @@ def get_layout():
                             options=[{"label": state, "value": state} for state in df["state"].unique()],
                             multi=True,
                             placeholder="Фильтр по состояниям"),
-                        dmc.Button(
-                            'Первая кнопка',
-                            id='button1'),
-                        dmc.Button(
-                            'Вторая кнопка',
-                            id='button2')],
+                        ],
                         **CARD_STYLE)
                 ], span=6),
                 dmc.Col([
@@ -61,13 +56,7 @@ def get_layout():
         ])
     ])
 
-
-
-
 app.layout = get_layout()
-
-# Обновление общей информации
-# Обновление общей информации
 @app.callback(
     Output("general-info", "children"),
     Input("state-filter", "value")
@@ -91,20 +80,15 @@ def update_general_info(selected_states):
     content = f"{client_info}<br>{period_info}"
     return content
 
-# Обновление круговой диаграммы
 @app.callback(
     Output("pie-chart", "figure"),
     Input("state-filter", "value")
 )
 def update_pie_chart(selected_states):
-    if selected_states:
-        filtered_df = df[df["state"].isin(selected_states)]
-    else:
-        filtered_df = df
-    fig = px.pie(filtered_df, names="state", title="Причины состояний")
+    fig = px.pie(df, names="state")
     return fig
 
-# Обновление диаграммы ганта
+
 @app.callback(
     Output("gantt-chart", "figure"),
     Input("state-filter", "value")
@@ -114,7 +98,7 @@ def update_gantt_chart(selected_states):
         filtered_df = df[df["state"].isin(selected_states)]
     else:
         filtered_df = df
-    fig = px.timeline(filtered_df, x_start="state_begin", x_end="state_end", y="state", title="Диаграмма ганта")
+    fig = px.timeline(filtered_df, x_start="state_begin", x_end="state_end", y="state", title="Диаграмма состояния")
     fig.update_layout(showlegend=False)
     return fig
 
