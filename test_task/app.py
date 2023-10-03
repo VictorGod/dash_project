@@ -67,18 +67,23 @@ def update_general_info(selected_states):
         if not filtered_df.empty:
             info = filtered_df.iloc[0]
         else:
-            raise PreventUpdate("No data for selected states.")
+            raise PreventUpdate("Нет данных для выбранных состояний.")
     else:
         info = df.iloc[0]
 
-
     required_columns = ['client_name', 'shift_day', 'endpoint_name', 'state_begin', 'state_end']
     if not all(column in info.index for column in required_columns):
-        raise PreventUpdate("DataFrame is missing required columns.")
-    client_info = f"Клиент: {info['client_name']} Сменный день: {info['shift_day']} Точка учета: {info['endpoint_name']}"
-    period_info = f"Начало периода: {info['state_begin']} Конец периода: {info['state_end']}"
-    content = f"{client_info}<br>{period_info}"
-    return content
+        raise PreventUpdate("В DataFrame отсутствуют необходимые столбцы.")
+    client_info = html.Div([
+        html.P(f"Клиент: {info['client_name']}", style={'font-weight': 'bold', 'font-size': '20px'}),
+        html.P(f"Сменный день: {info['shift_day']}"),
+        html.P(f"Точка учета: {info['endpoint_name']}"),
+        html.P(f"Начало периода: {info['state_begin']}"),
+        html.P(f"Конец периода: {info['state_end']}")
+    ], style={'margin-bottom': '20px'})
+    return client_info
+
+
 
 @app.callback(
     Output("pie-chart", "figure"),
