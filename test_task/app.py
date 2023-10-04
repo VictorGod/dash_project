@@ -106,12 +106,19 @@ def update_gantt_chart(selected_states):
         filtered_df = df[df["state"].isin(selected_states)]
     else:
         filtered_df = df
-    fig = px.timeline(filtered_df, x_start="state_begin", x_end="state_end", y="state", title="Диаграмма состояния")
-    fig.update_layout(
-        showlegend=False,
-        title=dict(text="Диаграмма состояния", x=0.5)
+
+    fig = px.timeline(
+        filtered_df,
+        x_start="state_begin",
+        x_end="state_end",
+        y="state",
+        title="Диаграмма состояния",
+        color="state",
+        color_discrete_sequence=px.colors.qualitative.Set1
     )
+    fig.update_layout(showlegend=False)
     return fig
+
 
 
 
