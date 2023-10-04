@@ -91,6 +91,9 @@ def update_general_info(selected_states):
 )
 def update_pie_chart(selected_states):
     fig = px.pie(df, names="state")
+    fig.update_layout(
+        margin=dict(t=10),  
+    )
     return fig
 
 
@@ -104,8 +107,12 @@ def update_gantt_chart(selected_states):
     else:
         filtered_df = df
     fig = px.timeline(filtered_df, x_start="state_begin", x_end="state_end", y="state", title="Диаграмма состояния")
-    fig.update_layout(showlegend=False)
+    fig.update_layout(
+        showlegend=False,
+        title=dict(text="Диаграмма состояния", x=0.5)
+    )
     return fig
+
 
 
 if __name__ == '__main__':
